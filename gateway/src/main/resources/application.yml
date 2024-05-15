@@ -1,0 +1,73 @@
+server:
+  port: 51000
+
+spring:
+  application:
+    name: server-gateway
+
+  cloud:
+#    gateway:
+#      routes:
+#        - id: server-one
+#          uri: lb://server-one
+#          predicates:
+#            - Path=/server-one/**
+#          filters:
+#            - StripPrefix=0
+#          metadata:
+#            lb:
+#              name: WEIGHTED_ROUND_ROBIN
+    loadbalancer:
+      nacos:
+        enabled: true
+#    discovery:
+#      locator:
+#        enable: true # gateway 可以从 nacos 发现微服务
+#        lower-case-service-id: true
+    nacos:
+      config:
+        server-addr: http://127.0.0.1:8848
+        file-extension: json
+        data-id: server-routes
+        namespace: a443294f-34f1-4ad9-8ab8-373414c1161a
+        group: dev
+        import-check:
+          enabled: false
+      discovery:
+        service: server-gateway
+        namespace: a443294f-34f1-4ad9-8ab8-373414c1161a
+        group: dev
+        server-addr: http://127.0.0.1:8848
+
+management:
+  endpoints:
+    web:
+      # 默认只暴露了 health/info 端点
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+
+#    config:
+#      data-id: micro-routes
+#      group: test
+#      namespace: 06007eb3-345e-41cd-ad13-aca92451f418
+
+
+#  cloud:
+#    nacos:
+#      config:
+#        import-check:
+#          enabled: false
+#      discovery:
+#        service: server-one
+#        namespace: 9cd43eea-83e3-4a9d-b3b2-d0ab357f2248
+#        server-addr: ${NACOS_SERVER_ADDR:http://172.30.67.230:8848}

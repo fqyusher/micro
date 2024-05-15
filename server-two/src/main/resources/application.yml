@@ -1,0 +1,17 @@
+server:
+  port: 53000
+
+spring:
+  application:
+    name: server-two
+
+  cloud:
+    nacos:
+      config:
+        import-check:
+          enabled: false
+      discovery:
+        service: server-two
+        namespace: a443294f-34f1-4ad9-8ab8-373414c1161a
+        group: dev
+        server-addr: http://127.0.0.1:8848
